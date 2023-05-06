@@ -14,10 +14,12 @@ impl Book {
         let mut name = String::new();
         let mut description = String::new();
 
+        println!("Book title: ");
         io::stdin()
             .read_line(&mut name)
             .expect("Could not read the name!");
 
+        println!("Book Description: ");
         io::stdin()
             .read_line(&mut description)
             .expect("Could not read the description!");
@@ -46,42 +48,56 @@ impl Library {
     }
 }
 impl Library {
-    pub fn get_action(&self) {
+    pub fn get_input(&mut self) {
         let mut input = String::new();
+
+        // Get input from CLI
         io::stdin()
             .read_line(&mut input)
             .expect("[error] Expected an input");
 
-        match input.as_str().trim() {
-            "CREATE" => {
-                println!("CREATE!")
-            }
-            "UPDATE" => {
-                println!("UPDATE!")
-            }
-            "DELETE" => {
-                println!("DELETE!")
-            }
-            "LIST" => {
-                println!("LIST!")
-            }
+        // Sets a enum value to the query
+        let action = match input.as_str().trim() {
+            "CREATE" => Action::CREATE,
+            "UPDATE" => Action::UPDATE,
+            "DELETE" => Action::DELETE,
+            "LIST" => Action::LIST,
             _ => {
-                eprintln!(
-                    "[error] Expected CREATE|UPDATE|DELETE|LIST. Received: {}",
-                    input
-                );
+                println!("[error] Expected a query. Received: {}", input);
+                Action::NIL
             }
+        };
+
+        // Runs enum_query
+        self.run_action(action);
+    }
+
+    fn run_action(&mut self, action: Action) {
+        match action {
+            Action::CREATE => {
+                self.books.push(Book::new_verbose());
+            }
+            Action::DELETE => {}
+            Action::LIST => {
+                self.list_books();
+            }
+            Action::UPDATE => {}
+            _ => {}
         }
     }
 
-    fn run_action(&self) {}
+    fn list_books(&self) {
+        println!("Total of {} books", &self.books.len());
+        for book in &self.books {
+            book.print();
+        }
+    }
 }
 
 enum Action {
-    DELETE(i32),
-    CREATE(Book),
+    DELETE,
+    CREATE,
     LIST,
-    UPDATE(i32, Book),
+    UPDATE,
+    NIL,
 }
-
-pub fn get_action() {}
