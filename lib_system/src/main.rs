@@ -1,12 +1,10 @@
 use lib_system::*;
 fn main() {
-    let mut array: Vec<Book> = Vec::new();
+    let mut lib = Library::new();
 
-    let mut a = Book::new(String::from("Nome"), String::from("Description"));
-
-    get_action();
-
-    list(&array);
+    while (true) {
+        lib.get_action();
+    }
 }
 
 fn list(vector: &Vec<Book>) {

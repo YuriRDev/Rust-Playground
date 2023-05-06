@@ -1,4 +1,4 @@
-use std::io;
+use std::io::{self, stdout};
 
 pub struct Book {
     name: String,
@@ -36,14 +36,52 @@ impl Book {
     }
 }
 
-pub enum Action {
+pub struct Library {
+    books: Vec<Book>,
+}
+
+impl Library {
+    pub fn new() -> Library {
+        Library { books: Vec::new() }
+    }
+}
+impl Library {
+    pub fn get_action(&self) {
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("[error] Expected an input");
+
+        match input.as_str().trim() {
+            "CREATE" => {
+                println!("CREATE!")
+            }
+            "UPDATE" => {
+                println!("UPDATE!")
+            }
+            "DELETE" => {
+                println!("DELETE!")
+            }
+            "LIST" => {
+                println!("LIST!")
+            }
+            _ => {
+                eprintln!(
+                    "[error] Expected CREATE|UPDATE|DELETE|LIST. Received: {}",
+                    input
+                );
+            }
+        }
+    }
+
+    fn run_action(&self) {}
+}
+
+enum Action {
     DELETE(i32),
     CREATE(Book),
     LIST,
     UPDATE(i32, Book),
 }
 
-pub fn get_action() {
-    let mut input = String::new();
-
-}
+pub fn get_action() {}
