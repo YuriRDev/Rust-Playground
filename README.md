@@ -1,11 +1,10 @@
 # Rust-Playground
-My personal playground for lerning Rust!
-
-#### [🏓] Chapter 3
+My personal playground with some Rust projects!
 
 
 
-| Exercise   | Description       |
+| Name   | Description       |
 | :---------- | :--------- | 
-| `1` | *Convert fahrenheit to celcius* | 
-| `2` | *Fibonnaci* | 
+| `minigrep` | *Literally a minigrep made on rust* | 
+| `lib_system` | *A crud... Kinda borring,  abbandoned 😁* |
+| `hightlight_search` | *Like a minigrep, but implemented a handmade colored cli and playing arround with the doc * |
