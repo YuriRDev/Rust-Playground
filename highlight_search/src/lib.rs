@@ -38,7 +38,17 @@ impl TextStyle {
         "\x1b[0m".to_string()
     }
 
+    /// Return an String colored with the TextStyle color!
+    /// ### Example
+    /// ```
+    /// use highlight_search::*;
+    /// 
+    /// let cyan_string = TextStyle::to_string("Some text...", TextStyle::CYAN);
+    /// println!("{} << yey", cyan_string);
+    ///
+    /// assert_eq!(cyan_string, "\x1b[94mSome text...\x1b[0m");
+    /// ```
     pub fn to_string(text: &str, style: TextStyle) -> String {
-        format!("{}{}{}",style.get_prefix(), text, TextStyle::postfix())
+        format!("{}{}{}", style.get_prefix(), text, TextStyle::postfix())
     }
 }
