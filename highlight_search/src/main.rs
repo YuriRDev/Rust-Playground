@@ -1,5 +1,17 @@
 use highlight_search::*;
+use std::env;
+use std::process;
 
 fn main() {
-    let cyan_string = TextStyle::to_string("Some text...", TextStyle::CYAN);
+    let config = Config::new(env::args()).unwrap_or_else(|err| {
+        eprintln!("[err] Problem parsing arguments: {}", err);
+        process::exit(0);
+    });
+
+    match run(config) {
+        Err(e) => {
+            println!("Application error: {}", e)
+        },
+        _ => {}
+    }
 }

@@ -1,3 +1,5 @@
+use std::{env, error::Error, fs};
+
 pub enum TextStyle {
     BOLD,
     ITALIC,
@@ -27,8 +29,6 @@ impl TextStyle {
             Self::CYAN => "\x1b[94m",
             Self::VIOLET => "\x1b[95m",
             Self::BLUE => "\x1b[96m",
-
-            _ => "",
         }
     }
 }
@@ -42,7 +42,7 @@ impl TextStyle {
     /// ### Example
     /// ```
     /// use highlight_search::*;
-    /// 
+    ///
     /// let cyan_string = TextStyle::to_string("Some text...", TextStyle::CYAN);
     /// println!("{} << yey", cyan_string);
     ///
@@ -51,4 +51,41 @@ impl TextStyle {
     pub fn to_string(text: &str, style: TextStyle) -> String {
         format!("{}{}{}", style.get_prefix(), text, TextStyle::postfix())
     }
+}
+
+pub struct Config {
+    pub query: String,
+    pub filename: String,
+}
+
+impl Config {
+    pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Missing query string"),
+        };
+
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Missing filename string"),
+        };
+
+        return Ok(Config { query, filename });
+    }
+}
+
+pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.filename)?;
+
+    for line in contents.lines() {
+        if line.contains(&config.query) {
+            println!("{}", TextStyle::to_string(line, TextStyle::CYAN));
+        } else {
+            println!("{line}");
+        }
+    }
+
+    Ok(())
 }
